@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GameInput : MonoBehaviour
 {
+    public event EventHandler OnInteractAction;
     private Vector2 _inputVector;
     private PlayerInputActions _playerInputActions;
 
@@ -21,5 +24,11 @@ public class GameInput : MonoBehaviour
     {
         _playerInputActions = new PlayerInputActions();
         _playerInputActions.Player.Enable();
+        _playerInputActions.Player.Interact.performed += Interact_performed;
+    }
+
+    private void Interact_performed(InputAction.CallbackContext obj)
+    {
+        OnInteractAction?.Invoke(this, EventArgs.Empty);
     }
 }
