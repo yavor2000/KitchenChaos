@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class Player : Singleton<Player>
+public class Player : MonoBehaviour, IGameService
 {
     public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
 
@@ -17,6 +17,7 @@ public class Player : Singleton<Player>
     private bool _isWalking;
     private Vector3 _lastInteractionDir;
     private ClearCounter _selectedCounter;
+    private ServiceLocator _serviceLocator;
 
     public bool IsWalking
     {
@@ -26,7 +27,7 @@ public class Player : Singleton<Player>
 
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private float rotateSpeed = 10f;
-    [SerializeField] private float playerRadius = .65f;
+    [SerializeField] private float playerRadius = .7f;
     [SerializeField] private float playerHeight = 2f;
 
     [SerializeField] private GameInput gameInput;
@@ -46,10 +47,13 @@ public class Player : Singleton<Player>
         }
     }
 
-    override
+    // override
     protected void Awake()
     {
-        base.Awake();
+        Debug.Log("Player Awake");
+        _serviceLocator = ServiceLocator.Current;
+        _serviceLocator.Register<Player>(this);
+        
         _inputVector = new Vector2(0, 0);
     }
 
@@ -63,8 +67,6 @@ public class Player : Singleton<Player>
     {
         _inputVector = gameInput.GetMovementVectorNormalized();
         Vector3 moveDir = new Vector3(_inputVector.x, 0f, _inputVector.y);
-        _isWalking = moveDir != Vector3.zero;
-
         var ptransform = transform;
         Vector3 ppos = ptransform.position;
         var moveDistance = moveSpeed * Time.deltaTime;
@@ -106,7 +108,7 @@ public class Player : Singleton<Player>
         {
             ptransform.position += moveDir * moveDistance;
         }
-
+        _isWalking = moveDir != Vector3.zero;
         ptransform.forward = Vector3.Slerp(ptransform.forward, moveDir, rotateSpeed * Time.deltaTime);
     }
     
@@ -148,7 +150,7 @@ public class Player : Singleton<Player>
         _selectedCounter = selectedCounter;
         OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs()
         {
-            selectedCounter = _selectedCounter
+            selectedCounter = selectedCounter
         });
     }
 }
