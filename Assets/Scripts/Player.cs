@@ -10,13 +10,13 @@ public class Player : MonoBehaviour, IGameService, IKitchenObjectParent
 
     public class OnSelectedCounterChangedEventArgs : EventArgs
     {
-        public ClearCounter selectedCounter;
+        public BaseCounter selectedCounter;
     }
     
     private Vector2 _inputVector;
     private bool _isWalking;
     private Vector3 _lastInteractionDir;
-    private ClearCounter _selectedCounter;
+    private BaseCounter _selectedCounter;
     private ServiceLocator _serviceLocator;
     private KitchenObject _kitchenObject;
 
@@ -127,14 +127,14 @@ public class Player : MonoBehaviour, IGameService, IKitchenObjectParent
         if (Physics.Raycast(transform.position, _lastInteractionDir, out RaycastHit raycastHit,
                 interactionDistance, countersLayerMask))
         {
-            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
+            if (raycastHit.transform.TryGetComponent(out BaseCounter baseCounter))
             {
-                ClearCounter cc = clearCounter;
-                // Debug.Log(String.Format("cc {0} | sel {1}", clearCounter.transform.position, _selectedCounter != null ? _selectedCounter.transform.position : "null"));
-                // Has ClearCounter
-                if (clearCounter != _selectedCounter)
+                BaseCounter bc = baseCounter;
+                Debug.Log($"bc {baseCounter.transform.position} | sel {(_selectedCounter != null ? _selectedCounter.transform.position : "null")}");
+                // Has a counter
+                if (baseCounter != _selectedCounter)
                 {
-                    SetSelectedCounter(clearCounter);
+                    SetSelectedCounter(baseCounter);
                 }
             }
             else
@@ -148,7 +148,7 @@ public class Player : MonoBehaviour, IGameService, IKitchenObjectParent
         }
     }
 
-    private void SetSelectedCounter(ClearCounter selectedCounter)
+    private void SetSelectedCounter(BaseCounter selectedCounter)
     {
         _selectedCounter = selectedCounter;
         OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs {

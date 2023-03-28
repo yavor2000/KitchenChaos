@@ -9,8 +9,8 @@ public class SelectedCounterVisual : MonoBehaviour
     private ServiceLocator _serviceLocator;
     private Player _player;
 
-    [SerializeField] private ClearCounter clearCounter;
-    [SerializeField] private GameObject visualGameObject;
+    [SerializeField] private BaseCounter baseCounter;
+    [SerializeField] private GameObject[] visualGameObjectArray;
     
     private void Awake()
     {
@@ -26,9 +26,9 @@ public class SelectedCounterVisual : MonoBehaviour
 
     private void Player_OnSelectedCounterChange(object sender, Player.OnSelectedCounterChangedEventArgs e)
     {
-        ClearCounter cc = e.selectedCounter;
-        // Debug.Log($"{DateTime.Now} counter changed to {(cc != null ? cc.transform.position.ToString() : "null")}");
-        if (e.selectedCounter == clearCounter)
+        BaseCounter bc = e.selectedCounter;
+        // Debug.Log($"{DateTime.Now} counter changed to {(bc != null ? bc.transform.position.ToString() : "null")}");
+        if (e.selectedCounter == baseCounter)
         {
             Show();
         }
@@ -40,11 +40,17 @@ public class SelectedCounterVisual : MonoBehaviour
 
     private void Show()
     {
-        visualGameObject.SetActive(true);
+        foreach (GameObject vgo in visualGameObjectArray)
+        {
+            vgo.SetActive(true);
+        }
     }
     
     private void Hide()
     {
-        visualGameObject.SetActive(false);
+        foreach (GameObject vgo in visualGameObjectArray)
+        {
+            vgo.SetActive(false);
+        }
     }
 }
