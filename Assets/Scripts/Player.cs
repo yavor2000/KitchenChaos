@@ -138,28 +138,39 @@ public class Player : MonoBehaviour, IGameService, IKitchenObjectParent
         {
             if (raycastHit.transform.TryGetComponent(out BaseCounter baseCounter))
             {
-                BaseCounter bc = baseCounter;
-                Debug.Log($"bc {baseCounter.transform.position} | sel {(_selectedCounter != null ? _selectedCounter.transform.position : "null")}");
+                // BaseCounter bc = baseCounter;
+                // Debug.Log($"bc {baseCounter.transform.position} | sel {(_selectedCounter != null ? _selectedCounter.transform.position : "null")}");
                 // Has a counter
                 if (baseCounter != _selectedCounter)
                 {
+                    Debug.Log("baseCounter != _selectedCounter");
                     SetSelectedCounter(baseCounter);
                 }
             }
             else
             {
-                SetSelectedCounter(null);
+                Debug.Log("raycast is NOT baseCounter");
+                if (_selectedCounter != null)
+                {
+                    SetSelectedCounter(null);
+                }
             }
         }
         else
         {
-            SetSelectedCounter(null);
+            if (_selectedCounter != null)
+            {
+                Debug.Log("raycast is false");
+                SetSelectedCounter(null);
+            }
+
         }
     }
 
     private void SetSelectedCounter(BaseCounter selectedCounter)
     {
         _selectedCounter = selectedCounter;
+        Debug.Log($"invoke OnSelectedCounterChanged with sel {selectedCounter}");
         OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs {
             selectedCounter = selectedCounter
         });
