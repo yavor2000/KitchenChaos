@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class Player : MonoBehaviour, IGameService
+public class Player : MonoBehaviour, IGameService, IKitchenObjectParent
 {
     public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
 
@@ -18,6 +18,7 @@ public class Player : MonoBehaviour, IGameService
     private Vector3 _lastInteractionDir;
     private ClearCounter _selectedCounter;
     private ServiceLocator _serviceLocator;
+    private KitchenObject _kitchenObject;
 
     public bool IsWalking
     {
@@ -32,6 +33,7 @@ public class Player : MonoBehaviour, IGameService
 
     [SerializeField] private GameInput gameInput;
     [SerializeField] private LayerMask countersLayerMask;
+    [SerializeField] private Transform kitchenObjectHoldPoint;
 
 
     private void Start()
@@ -43,7 +45,7 @@ public class Player : MonoBehaviour, IGameService
     {
         if (_selectedCounter != null)
         {
-            _selectedCounter.Interact();
+            _selectedCounter.Interact(this);
         }
     }
 
@@ -152,5 +154,30 @@ public class Player : MonoBehaviour, IGameService
         OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs {
             selectedCounter = selectedCounter
         });
+    }
+    
+    public Transform GetKitchenObjectFollowTransform()
+    {
+        return kitchenObjectHoldPoint;
+    }
+
+    public void SetKitchenObject(KitchenObject ko)
+    {
+        _kitchenObject = ko;
+    }
+
+    public KitchenObject GetKitchenObject()
+    {
+        return _kitchenObject;
+    }
+
+    public void ClearKitchenObject()
+    {
+        _kitchenObject = null;
+    }
+
+    public bool HasKitchenObject()
+    {
+        return _kitchenObject != null;
     }
 }
