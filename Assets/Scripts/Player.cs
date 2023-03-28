@@ -127,29 +127,29 @@ public class Player : MonoBehaviour, IGameService
         {
             if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
             {
+                ClearCounter cc = clearCounter;
+                // Debug.Log(String.Format("cc {0} | sel {1}", clearCounter.transform.position, _selectedCounter != null ? _selectedCounter.transform.position : "null"));
                 // Has ClearCounter
                 if (clearCounter != _selectedCounter)
                 {
                     SetSelectedCounter(clearCounter);
-                }
-                else
-                {
-                    SetSelectedCounter(null);
                 }
             }
             else
             {
                 SetSelectedCounter(null);
             }
-            
+        }
+        else
+        {
+            SetSelectedCounter(null);
         }
     }
 
     private void SetSelectedCounter(ClearCounter selectedCounter)
     {
         _selectedCounter = selectedCounter;
-        OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs()
-        {
+        OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs {
             selectedCounter = selectedCounter
         });
     }
