@@ -9,7 +9,9 @@ public class BaseCounter : MonoBehaviour, IKitchenObjectParent
     private KitchenObject _kitchenObject;
     
     public virtual void Interact(Player player) {}
-    
+
+    public virtual void InteractAlternate(Player player) {}
+
     public Transform GetKitchenObjectFollowTransform()
     {
         return counterTopPoint;
