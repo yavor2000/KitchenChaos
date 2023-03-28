@@ -999,6 +999,18 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 4042086640338296701, guid: a3c0177338f0ed64d8c8c12075f4001b,
+        type: 3}
+      propertyPath: tomatoPrefab
+      value: 
+      objectReference: {fileID: 8390660512329872589, guid: 4c2d63c32d2e53344bb5e8ec6c5fc502,
+        type: 3}
+    - target: {fileID: 4042086640338296701, guid: a3c0177338f0ed64d8c8c12075f4001b,
+        type: 3}
+      propertyPath: kitchenObjectSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 856fad048279b364d9285b7a168e152d,
+        type: 2}
     - target: {fileID: 9115931183204514143, guid: a3c0177338f0ed64d8c8c12075f4001b,
         type: 3}
       propertyPath: m_RootOrder
