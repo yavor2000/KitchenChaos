@@ -4,14 +4,9 @@ using UnityEngine;
 
 namespace Counters
 {
-    public class CuttingCounter : BaseCounter
+    public class CuttingCounter : BaseCounter, IHasProgress
     {
-        public event EventHandler<OnProgressChangedEventArgs> OnProgressChanged;
-
-        public class OnProgressChangedEventArgs : EventArgs
-        {
-            public float progressNormalized;
-        }
+        public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
     
         public event EventHandler OnCut;
     
@@ -91,7 +86,7 @@ namespace Counters
             float cuttingProgressMax = cuttingRecipeSO != null ? cuttingRecipeSO.cuttingProgressMax : 0f;
             if (cuttingProgressMax > 0f)
             {
-                OnProgressChanged?.Invoke(this, new OnProgressChangedEventArgs()
+                OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs()
                 {
                     progressNormalized = cuttingProgress / cuttingProgressMax,
                 });
