@@ -20,7 +20,7 @@ public class SelectedCounterVisual : MonoBehaviour
     private void Start()
     {
         _player = _serviceLocator.Get<Player>();
-        Debug.Log("Selected counter vis, player is " + _player);
+        Debug.Log("counter vis Start, player is " + _player);
         _player.OnSelectedCounterChanged += Player_OnSelectedCounterChange;
     }
 
