@@ -9,6 +9,6 @@ public interface IHasProgress
 
     public class OnProgressChangedEventArgs : EventArgs
     {
-        public float progressNormalized;
+        public float ProgressNormalized;
     }
 }

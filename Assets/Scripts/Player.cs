@@ -11,7 +11,7 @@ public class Player : MonoBehaviour, IGameService, IKitchenObjectParent
 
     public class OnSelectedCounterChangedEventArgs : EventArgs
     {
-        public BaseCounter selectedCounter;
+        public BaseCounter SelectedCounter;
     }
     
     private Vector2 _inputVector;
@@ -173,7 +173,7 @@ public class Player : MonoBehaviour, IGameService, IKitchenObjectParent
         _selectedCounter = selectedCounter;
         Debug.Log($"invoke OnSelectedCounterChanged with sel {selectedCounter}");
         OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs {
-            selectedCounter = selectedCounter
+            SelectedCounter = selectedCounter
         });
     }
     

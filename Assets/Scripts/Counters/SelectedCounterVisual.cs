@@ -24,9 +24,9 @@ namespace Counters
 
         private void Player_OnSelectedCounterChange(object sender, Player.OnSelectedCounterChangedEventArgs e)
         {
-            BaseCounter bc = e.selectedCounter;
+            BaseCounter bc = e.SelectedCounter;
             // Debug.Log($"{DateTime.Now} counter changed to {(bc != null ? bc.transform.position.ToString() : "null")}");
-            if (e.selectedCounter == baseCounter)
+            if (e.SelectedCounter == baseCounter)
             {
                 Show();
             }

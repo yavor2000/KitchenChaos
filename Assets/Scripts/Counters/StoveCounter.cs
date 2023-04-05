@@ -13,7 +13,7 @@ namespace Counters
 
         public class OnStateChangedEventArgs : EventArgs
         {
-            public State state;
+            public State State;
         }
         
         public enum State
@@ -216,7 +216,7 @@ namespace Counters
         {
             OnStateChanged?.Invoke(this, new OnStateChangedEventArgs()
             {
-                state = _state
+                State = _state
             });
         }
 
@@ -224,7 +224,7 @@ namespace Counters
         {
             OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs()
             {
-                progressNormalized = _fryingTimer / _fryingRecipeSO.fryingTimerMax
+                ProgressNormalized = _fryingTimer / _fryingRecipeSO.fryingTimerMax
             });
         }
         
@@ -234,7 +234,7 @@ namespace Counters
             {
                 OnProgressChanged.Invoke(this, new IHasProgress.OnProgressChangedEventArgs()
                 {
-                    progressNormalized = _burningTimer / _burningRecipeSO.burningTimerMax
+                    ProgressNormalized = _burningTimer / _burningRecipeSO.burningTimerMax
                 });
             }
         }

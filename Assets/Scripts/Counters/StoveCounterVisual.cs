@@ -16,7 +16,7 @@ namespace Counters
 
         private void StoveCounter_OnStateChanged(object sender, StoveCounter.OnStateChangedEventArgs e)
         {
-            switch (e.state)
+            switch (e.State)
             {
                 case StoveCounter.State.Idle:
                 case StoveCounter.State.Burned:

@@ -95,7 +95,7 @@ namespace Counters
             {
                 OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs()
                 {
-                    progressNormalized = cuttingProgress / cuttingProgressMax,
+                    ProgressNormalized = cuttingProgress / cuttingProgressMax,
                 });
             }
         }
