@@ -149,6 +149,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlateCompleteVisual
       objectReference: {fileID: 0}
+    - target: {fileID: 4354341987909636664, guid: 10e39c981f2de6441b54efde32ced8f0,
+        type: 3}
+      propertyPath: plateKitchenObject
+      value: 
+      objectReference: {fileID: 1877129757770511390}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
