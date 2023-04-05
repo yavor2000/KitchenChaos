@@ -27,7 +27,26 @@ namespace Counters
                 // There is a kitchen object here
                 if (player.HasKitchenObject())
                 {
-                    // Player is carrying somthing
+                    // Player is carrying something
+                    if (player.GetKitchenObject().TryGetPlate(out PlateKitchenObject pko))
+                    {
+                        if (pko.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO()))
+                        {
+                            GetKitchenObject().DestroySelf();
+                        }
+                    }
+                    else
+                    {
+                        // Player is not carrying Plate but something else
+                        if (GetKitchenObject().TryGetPlate(out pko))
+                        {
+                            // Counter has a Plate
+                            if (pko.TryAddIngredient( player.GetKitchenObject().GetKitchenObjectSO()))
+                            {
+                                player.GetKitchenObject().DestroySelf();
+                            }
+                        }
+                    }
                 }
                 else
                 {
