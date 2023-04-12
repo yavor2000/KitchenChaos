@@ -1,9 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using ScriptableObjects;
 using UnityEngine;
 using UnityEngine.UI;
 
+namespace UI
+{
 public class PlateIconsSingleUI : MonoBehaviour
 {
     [SerializeField] private Image image;
@@ -12,4 +12,5 @@ public class PlateIconsSingleUI : MonoBehaviour
     {
         image.sprite = koso.sprite;
     }
+}
 }

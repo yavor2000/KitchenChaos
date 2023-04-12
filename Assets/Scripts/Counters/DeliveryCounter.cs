@@ -10,6 +10,10 @@ public class DeliveryCounter : BaseCounter
     private void Awake()
     {
         _serviceLocator = ServiceLocator.Current;
+    }
+
+    private void Start()
+    {
         _deliveryManager = _serviceLocator.Get<DeliveryManager>();
     }
 

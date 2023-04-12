@@ -1,9 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using ScriptableObjects;
 using UnityEngine;
 
+namespace UI
+{
 public class PlateIconsUI : MonoBehaviour
 {
     [SerializeField] private PlateKitchenObject plateKitchenObject;
@@ -42,4 +41,5 @@ public class PlateIconsUI : MonoBehaviour
             iconTransform.GetComponent<PlateIconsSingleUI>().SetKitchenObjectSO(koso);
         }
     }
+}
 }

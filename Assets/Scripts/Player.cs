@@ -144,13 +144,11 @@ public class Player : MonoBehaviour, IGameService, IKitchenObjectParent
                 // Has a counter
                 if (baseCounter != _selectedCounter)
                 {
-                    Debug.Log("baseCounter != _selectedCounter");
                     SetSelectedCounter(baseCounter);
                 }
             }
             else
             {
-                Debug.Log("raycast is NOT baseCounter");
                 if (_selectedCounter != null)
                 {
                     SetSelectedCounter(null);
@@ -161,7 +159,6 @@ public class Player : MonoBehaviour, IGameService, IKitchenObjectParent
         {
             if (_selectedCounter != null)
             {
-                Debug.Log("raycast is false");
                 SetSelectedCounter(null);
             }
 
@@ -171,7 +168,7 @@ public class Player : MonoBehaviour, IGameService, IKitchenObjectParent
     private void SetSelectedCounter(BaseCounter selectedCounter)
     {
         _selectedCounter = selectedCounter;
-        Debug.Log($"invoke OnSelectedCounterChanged with sel {selectedCounter}");
+        // Debug.Log($"invoke OnSelectedCounterChanged with sel {selectedCounter}");
         OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs {
             SelectedCounter = selectedCounter
         });

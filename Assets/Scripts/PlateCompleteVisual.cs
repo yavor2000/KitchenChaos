@@ -19,7 +19,7 @@ public class PlateCompleteVisual : MonoBehaviour
     private void Start()
     {
         HideAllIngredients();
-        Debug.Log("deb: " + plateKitchenObject);
+        // Debug.Log("deb: " + plateKitchenObject);
         plateKitchenObject.OnIngredientAdded += PlateKitchenObject_OnIngredientAdded;
     }
 

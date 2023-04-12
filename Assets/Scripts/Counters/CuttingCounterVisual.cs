@@ -13,7 +13,7 @@ namespace Counters
         private void Awake()
         {
             _animator = GetComponent<Animator>();
-            Debug.Log("Awake anim is " + _animator);
+            // Debug.Log("Awake anim is " + _animator);
         }
 
         private void Start()
@@ -23,7 +23,7 @@ namespace Counters
 
         private void CuttingCounter_OnCut(object sender, EventArgs e)
         {
-            Debug.Log("anim to call is " + _animator);
+            // Debug.Log("anim to call is " + _animator);
             _animator.SetTrigger(Cut);
         }
     }

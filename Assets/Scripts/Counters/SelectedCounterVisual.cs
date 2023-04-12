@@ -18,7 +18,7 @@ namespace Counters
         private void Start()
         {
             _player = _serviceLocator.Get<Player>();
-            Debug.Log("counter vis Start, player is " + _player);
+            // Debug.Log("counter vis Start, player is " + _player);
             _player.OnSelectedCounterChanged += Player_OnSelectedCounterChange;
         }
 

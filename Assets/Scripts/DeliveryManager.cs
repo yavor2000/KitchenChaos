@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using ScriptableObjects;
 using UnityEngine;
@@ -7,6 +6,9 @@ using Random = UnityEngine.Random;
 
 public class DeliveryManager : MonoBehaviour, IGameService
 {
+    public event EventHandler OnRecipeSpawned;
+    public event EventHandler OnRecipeCompleted;
+    
     [SerializeField] private RecipeListSO recipeListSO;
 
     private ServiceLocator _serviceLocator;
@@ -20,7 +22,6 @@ public class DeliveryManager : MonoBehaviour, IGameService
         _serviceLocator = ServiceLocator.Current;
         _serviceLocator.Register<DeliveryManager>(this);
         _waitingRecipeSOList = new List<RecipeSO>();
-        Debug.Log("DeliveryManager awake");
     }
 
     private void Update()
@@ -33,7 +34,7 @@ public class DeliveryManager : MonoBehaviour, IGameService
             {
                 RecipeSO waitingRecipeSO = recipeListSO.recipeSOList[Random.Range(0, recipeListSO.recipeSOList.Count)];
                 _waitingRecipeSOList.Add(waitingRecipeSO);
-                Debug.Log(waitingRecipeSO.recipeName);
+                OnRecipeSpawned?.Invoke(this, EventArgs.Empty);
             }
         }
     }
@@ -43,7 +44,14 @@ public class DeliveryManager : MonoBehaviour, IGameService
         for (int i = 0; i < _waitingRecipeSOList.Count; i++)
         {
             RecipeSO waitingRecipeSO = _waitingRecipeSOList[i];
-
+            // if (CompareArbitraryObjects.Compare(waitingRecipeSO._kitchenObjectSOList, plateKitchenObject.GetKitchenObjectSOList()))
+            // {
+            //     // Player delivered the correct recipe!
+            //     Debug.Log("Player delivered the correct recipe!");
+            //     _waitingRecipeSOList.RemoveAt(i);
+            //     OnRecipeCompleted?.Invoke(this, EventArgs.Empty);
+            //     return;
+            // }
             if (waitingRecipeSO._kitchenObjectSOList.Count == plateKitchenObject.GetKitchenObjectSOList().Count)
             {
                 // Has the same number of ingredients
@@ -62,24 +70,30 @@ public class DeliveryManager : MonoBehaviour, IGameService
                             break;
                         }
                     }
-
+            
                     if (!ingredientFound)
                     {
                         // This Recipe ingredient was not found on the Plate
                         plateContentsMatchesRecipe = false;
                     }
                 }
-
+            
                 if (plateContentsMatchesRecipe)
                 {
                     // Player delivered the correct recipe!
                     Debug.Log("Player delivered the correct recipe!");
                     _waitingRecipeSOList.RemoveAt(i);
+                    OnRecipeCompleted?.Invoke(this, EventArgs.Empty);
                     return;
                 }
             }
         }
         // Player did not deliver a correct recipe
         Debug.Log("Player did not deliver a correct recipe");
+    }
+
+    public List<RecipeSO> GetWaitingRecipeSOList()
+    {
+        return _waitingRecipeSOList;
     }
 }

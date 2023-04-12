@@ -1,10 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Counters;
 using UnityEngine;
 using UnityEngine.UI;
 
+namespace UI
+{
 public class ProgressBarUI : MonoBehaviour
 {
     [SerializeField] private GameObject hasProgressGameObject;
@@ -47,4 +45,5 @@ public class ProgressBarUI : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+}
 }
