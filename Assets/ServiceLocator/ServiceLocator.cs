@@ -22,6 +22,7 @@ public class ServiceLocator
     public static ServiceLocator Current {
         get
         {
+            // Debug.Log("Current");
             if (_current == null)
             {
                 Initiailze();
@@ -49,6 +50,7 @@ public class ServiceLocator
     public T Get<T>() where T : IGameService
     {
         string key = typeof(T).Name;
+        Debug.Log($"Get<{key}>");
         if (!_services.ContainsKey(key))
         {
             Debug.LogError($"{key} not registered with {GetType().Name}");
@@ -66,6 +68,7 @@ public class ServiceLocator
     public void Register<T>(T service) where T : IGameService
     {
         string key = typeof(T).Name;
+        Debug.Log($"Register<{key}>");
         if (_services.ContainsKey(key))
         {
             Debug.LogError($"Attempted to register service of type {key} which is already registered with the {GetType().Name}.");

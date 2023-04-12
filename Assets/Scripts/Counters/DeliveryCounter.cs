@@ -1,19 +1,23 @@
 using System;
+using UnityEngine;
 
 namespace Counters
 {
-public class DeliveryCounter : BaseCounter
+public class DeliveryCounter : BaseCounter, IGameService
 {
     private ServiceLocator _serviceLocator;
     private DeliveryManager _deliveryManager;
 
     private void Awake()
     {
+        Debug.Log("DeliveryCounter awake");
         _serviceLocator = ServiceLocator.Current;
+        _serviceLocator.Register<DeliveryCounter>(this);
     }
 
     private void Start()
     {
+        Debug.Log("DeliveryCounter start");
         _deliveryManager = _serviceLocator.Get<DeliveryManager>();
     }
 

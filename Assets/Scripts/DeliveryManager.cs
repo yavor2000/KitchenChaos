@@ -8,6 +8,8 @@ public class DeliveryManager : MonoBehaviour, IGameService
 {
     public event EventHandler OnRecipeSpawned;
     public event EventHandler OnRecipeCompleted;
+    public event EventHandler OnRecipeSuccess;
+    public event EventHandler OnRecipeFailed;
     
     [SerializeField] private RecipeListSO recipeListSO;
 
@@ -19,6 +21,7 @@ public class DeliveryManager : MonoBehaviour, IGameService
 
     private void Awake()
     {
+        Debug.Log("DeliveryManager awake");
         _serviceLocator = ServiceLocator.Current;
         _serviceLocator.Register<DeliveryManager>(this);
         _waitingRecipeSOList = new List<RecipeSO>();
@@ -84,12 +87,14 @@ public class DeliveryManager : MonoBehaviour, IGameService
                     Debug.Log("Player delivered the correct recipe!");
                     _waitingRecipeSOList.RemoveAt(i);
                     OnRecipeCompleted?.Invoke(this, EventArgs.Empty);
+                    OnRecipeSuccess?.Invoke(this, EventArgs.Empty);
                     return;
                 }
             }
         }
         // Player did not deliver a correct recipe
         Debug.Log("Player did not deliver a correct recipe");
+        OnRecipeFailed?.Invoke(this, EventArgs.Empty);
     }
 
     public List<RecipeSO> GetWaitingRecipeSOList()

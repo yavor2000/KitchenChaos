@@ -8,7 +8,7 @@ public static class Bootstrapper
     {
         Debug.Log("Bootstrapper init");
         // Initialize default service locator.
-        ServiceLocator.Initiailze();
+        // ServiceLocator.Initiailze();
 
         // Register all your services next.
         
