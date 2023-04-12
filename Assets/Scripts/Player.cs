@@ -14,7 +14,8 @@ public class Player : MonoBehaviour, IGameService, IKitchenObjectParent
     {
         public BaseCounter SelectedCounter;
     }
-    
+
+    private KitchenGameManager _gameManager;
     private Vector2 _inputVector;
     private bool _isWalking;
     private Vector3 _lastInteractionDir;
@@ -40,12 +41,15 @@ public class Player : MonoBehaviour, IGameService, IKitchenObjectParent
 
     private void Start()
     {
+        _gameManager = _serviceLocator.Get<KitchenGameManager>();
         gameInput.OnInteractAction += GameInput_OnInteractAction;
         gameInput.OnInteractAlternateAction += GameInput_OnInteractAlternateAction;
     }
 
     private void GameInput_OnInteractAction(object sender, EventArgs e)
     {
+        if (!_gameManager.IsGamePlaying()) return;
+        
         if (_selectedCounter != null)
         {
             _selectedCounter.Interact(this);
@@ -54,6 +58,8 @@ public class Player : MonoBehaviour, IGameService, IKitchenObjectParent
 
     private void GameInput_OnInteractAlternateAction(object sender, EventArgs e)
     {
+        if (!_gameManager.IsGamePlaying()) return;
+        
         if (_selectedCounter != null)
         {
             _selectedCounter.InteractAlternate(this);
