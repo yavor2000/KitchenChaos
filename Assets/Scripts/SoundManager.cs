@@ -24,7 +24,7 @@ public class SoundManager : MonoBehaviour, IGameService
 
     private void Start()
     {
-        Debug.Log("Soundmanager start");
+        Debug.Log("SoundManager start");
         _deliveryManager = _serviceLocator.Get<DeliveryManager>();
         _deliveryCounter = _serviceLocator.Get<DeliveryCounter>();
         _player = _serviceLocator.Get<Player>();

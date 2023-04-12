@@ -27,7 +27,8 @@ public class KitchenGameManager : MonoBehaviour, IGameService
     private State _state;
     private float _waitingToStartTimer = 1f;
     private float _countdownToStartTimer = 3f;
-    private float _gamePlayingTimer = 10f;
+    private float _gamePlayingTimer = 0f;
+    private float _gamePlayingTimerMax = 20f;
 
     public State GameState
     {
@@ -48,7 +49,7 @@ public class KitchenGameManager : MonoBehaviour, IGameService
     private void Awake()
     {
         _serviceLocator = ServiceLocator.Current;
-        _serviceLocator.Register(this);
+        _serviceLocator.Register<KitchenGameManager>(this);
         GameState = State.WaitingToStart;
     }
 
@@ -74,6 +75,7 @@ public class KitchenGameManager : MonoBehaviour, IGameService
                 if (_countdownToStartTimer < 0f)
                 {
                     GameState = State.GamePlaying;
+                    _gamePlayingTimer = _gamePlayingTimerMax;
                 }
                 break;
             case State.GamePlaying:
@@ -96,5 +98,10 @@ public class KitchenGameManager : MonoBehaviour, IGameService
     public float GetCountdownToStartTimer()
     {
         return _countdownToStartTimer;
+    }
+
+    public float GetGamePlayingTimerNormalized()
+    {
+        return 1 - (_gamePlayingTimer / _gamePlayingTimerMax);
     }
 }
