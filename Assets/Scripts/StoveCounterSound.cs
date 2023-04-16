@@ -9,14 +9,20 @@ public class StoveCounterSound : MonoBehaviour
     [SerializeField] private StoveCounter stoveCounter;
 
     private AudioSource _audioSource;
+    private ServiceLocator _serviceLocator;
+    private SoundManager _soundManager;
 
     private void Awake()
     {
+        _serviceLocator = ServiceLocator.Current;
+        
         _audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
     {
+        _soundManager = _serviceLocator.Get<SoundManager>();
+        
         stoveCounter.OnStateChanged += StoveCounter_OnStateChanged;
     }
 
@@ -31,6 +37,7 @@ public class StoveCounterSound : MonoBehaviour
                 break;
             case StoveCounter.State.Frying:
             case StoveCounter.State.Fried:
+                _audioSource.volume = _soundManager.GetVolume();
                 _audioSource.Play();
                 break;
         }

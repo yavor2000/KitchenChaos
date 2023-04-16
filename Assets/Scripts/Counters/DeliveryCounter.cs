@@ -12,7 +12,7 @@ public class DeliveryCounter : BaseCounter, IGameService
     {
         Debug.Log("DeliveryCounter awake");
         _serviceLocator = ServiceLocator.Current;
-        _serviceLocator.Register<DeliveryCounter>(this);
+        _serviceLocator.Register(this);
     }
 
     private void Start()
@@ -34,6 +34,11 @@ public class DeliveryCounter : BaseCounter, IGameService
                 ko.DestroySelf();
             }
         }
+    }
+    
+    private void OnDestroy()
+    {
+        _serviceLocator.Unregister<DeliveryCounter>();
     }
 }
 }

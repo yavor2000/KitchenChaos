@@ -8,8 +8,10 @@ public class GamePauseUI : MonoBehaviour
 {
     private ServiceLocator _serviceLocator;
     private KitchenGameManager _gameManager;
+    private OptionsUI _optionsUI;
 
     [SerializeField] private Button mainMenuButton;
+    [SerializeField] private Button optionsButton;
     [SerializeField] private Button resumeButton;
     
 
@@ -25,10 +27,17 @@ public class GamePauseUI : MonoBehaviour
         {
             _gameManager.TogglePauseGame();
         });
+        
+        optionsButton.onClick.AddListener(() =>
+        {
+            Hide();
+            _optionsUI.Show();
+        });
     }
 
     private void Start()
     {
+        _optionsUI = _serviceLocator.Get<OptionsUI>();
         _gameManager = _serviceLocator.Get<KitchenGameManager>();
         _gameManager.OnGamePaused += GameManager_OnGamePaused;
         _gameManager.OnGameUnPaused += GameManager_OnGameUnPaused;

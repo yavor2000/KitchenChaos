@@ -74,7 +74,7 @@ public class KitchenGameManager : MonoBehaviour, IGameService
     private void Awake()
     {
         _serviceLocator = ServiceLocator.Current;
-        _serviceLocator.Register<KitchenGameManager>(this);
+        _serviceLocator.Register(this);
         GameState = State.WaitingToStart;
     }
 

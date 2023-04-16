@@ -7,19 +7,24 @@ using Random = UnityEngine.Random;
 
 public class SoundManager : MonoBehaviour, IGameService
 {
+    private const string PLAYER_PREFS_SOUND_EFFECTS_VOLUME = "SoundEffectsVolume";
+    
     private ServiceLocator _serviceLocator;
     private DeliveryManager _deliveryManager;
     private DeliveryCounter _deliveryCounter;
     private Player _player;
+    private float _volume = 1f;
 
     [SerializeField] private AudioClipRefsSO audioClipRefsSO;
-    
+
 
     private void Awake()
     {
         Debug.Log("SoundManager awake");
         _serviceLocator = ServiceLocator.Current;
-        _serviceLocator.Register<SoundManager>(this);
+        _serviceLocator.Register(this);
+
+        _volume = PlayerPrefs.GetFloat(PLAYER_PREFS_SOUND_EFFECTS_VOLUME, _volume);
     }
 
     private void Start()
@@ -75,18 +80,42 @@ public class SoundManager : MonoBehaviour, IGameService
         PlaySound(audioClipRefsSO.deliveryFail, _deliveryCounter.transform.position);
     }
 
-    private void PlaySound(AudioClip audioClip, Vector3 position, float volume = 1f)
+    private void PlaySound(AudioClip audioClip, Vector3 position, float volumeMultiplayer = 1f)
     {
-        AudioSource.PlayClipAtPoint(audioClip, position, volume);
+        Debug.Log($"play with {_volume} * {volumeMultiplayer}");
+        AudioSource.PlayClipAtPoint(audioClip, position, _volume * volumeMultiplayer);
     }
-    
-    private void PlaySound(AudioClip[] audioClipArray, Vector3 position, float volume = 1f)
+
+    private void PlaySound(AudioClip[] audioClipArray, Vector3 position, float volumeMultiplayer = 1f)
     {
-        AudioSource.PlayClipAtPoint(audioClipArray[Random.Range(0, audioClipArray.Length)], position, volume);
+        PlaySound(audioClipArray[Random.Range(0, audioClipArray.Length)], position,
+            _volume * volumeMultiplayer);
     }
 
     public void PlayFootstepsSound(Vector3 position, float volume = 1f)
     {
-        PlaySound(audioClipRefsSO.footstep, position, volume);
+        PlaySound(audioClipRefsSO.footstep, position, _volume * volume);
+    }
+
+    public void ChangeVolume()
+    {
+        _volume += .1f;
+        if (_volume > 1f)
+        {
+            _volume = 0f;
+        }
+        
+        PlayerPrefs.SetFloat(PLAYER_PREFS_SOUND_EFFECTS_VOLUME, _volume);
+        PlayerPrefs.Save();
+    }
+
+    public float GetVolume()
+    {
+        return _volume;
+    }
+    
+    private void OnDestroy()
+    {
+        _serviceLocator.Unregister<SoundManager>();
     }
 }

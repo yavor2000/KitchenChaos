@@ -24,7 +24,7 @@ public class DeliveryManager : MonoBehaviour, IGameService
     {
         Debug.Log("DeliveryManager awake");
         _serviceLocator = ServiceLocator.Current;
-        _serviceLocator.Register<DeliveryManager>(this);
+        _serviceLocator.Register(this);
         _waitingRecipeSOList = new List<RecipeSO>();
     }
 
@@ -107,5 +107,10 @@ public class DeliveryManager : MonoBehaviour, IGameService
     public int GetSuccessfulRecipesAmount()
     {
         return _successfulRecipesAmount;
+    }
+    
+    private void OnDestroy()
+    {
+        _serviceLocator.Unregister<DeliveryManager>();
     }
 }

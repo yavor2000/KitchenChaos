@@ -71,7 +71,7 @@ public class Player : MonoBehaviour, IGameService, IKitchenObjectParent
     {
         Debug.Log("Player Awake");
         _serviceLocator = ServiceLocator.Current;
-        _serviceLocator.Register<Player>(this);
+        _serviceLocator.Register(this);
         
         _inputVector = new Vector2(0, 0);
     }
@@ -208,5 +208,10 @@ public class Player : MonoBehaviour, IGameService, IKitchenObjectParent
     public bool HasKitchenObject()
     {
         return _kitchenObject != null;
+    }
+    
+    private void OnDestroy()
+    {
+        _serviceLocator.Unregister<Player>();
     }
 }
