@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Tools;
 using UnityEngine;
 
 /// <summary>
@@ -51,6 +52,7 @@ public class ServiceLocator
     {
         string key = typeof(T).Name;
         Debug.Log($"Get<{key}>");
+        Debug.Log(Util.GetStackTrace(2, -1));
         if (!_services.ContainsKey(key))
         {
             Debug.LogError($"{key} not registered with {GetType().Name}");

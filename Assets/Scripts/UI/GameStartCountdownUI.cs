@@ -26,7 +26,7 @@ public class GameStartCountdownUI : MonoBehaviour
 
     private void Update()
     {
-        if (countdownText.gameObject.active)
+        if (countdownText.gameObject.activeInHierarchy)
         {
             countdownText.text = Mathf.Ceil(_gameManager.GetCountdownToStartTimer()).ToString(CultureInfo.CurrentCulture);
         }

@@ -6,6 +6,8 @@ using UnityEngine;
 public class KitchenGameManager : MonoBehaviour, IGameService
 {
     public event EventHandler<OnStateChangedEventArgs> OnStateChanged;
+    public event EventHandler OnGamePaused;
+    public event EventHandler OnGameUnPaused;
 
     public class OnStateChangedEventArgs : EventArgs
     {
@@ -23,13 +25,36 @@ public class KitchenGameManager : MonoBehaviour, IGameService
     private ServiceLocator _serviceLocator;
     private Player _player;
     private SoundManager _soundManager;
+    private GameInput _gameInput;
     
     private State _state;
     private float _waitingToStartTimer = 1f;
     private float _countdownToStartTimer = 3f;
     private float _gamePlayingTimer = 0f;
     private float _gamePlayingTimerMax = 20f;
+    private bool _isGamePaused = false;
 
+    public bool IsGamePaused
+    {
+        get => _isGamePaused;
+        set
+        {
+            if (_isGamePaused != value)
+            {
+                _isGamePaused = value;
+            }
+
+            if (_isGamePaused)
+            {
+                OnGamePaused?.Invoke(this, EventArgs.Empty);
+            }
+            else
+            {
+                OnGameUnPaused?.Invoke(this, EventArgs.Empty);
+            }
+        }
+    }
+    
     public State GameState
     {
         get => _state;
@@ -57,6 +82,14 @@ public class KitchenGameManager : MonoBehaviour, IGameService
     {
         _player = _serviceLocator.Get<Player>();
         _soundManager = _serviceLocator.Get<SoundManager>();
+        _gameInput = _serviceLocator.Get<GameInput>();
+
+        _gameInput.OnPauseAction += GameInput_OnPauseAction;
+    }
+
+    private void GameInput_OnPauseAction(object sender, EventArgs e)
+    {
+        TogglePauseGame();
     }
 
     private void Update()
@@ -103,5 +136,24 @@ public class KitchenGameManager : MonoBehaviour, IGameService
     public float GetGamePlayingTimerNormalized()
     {
         return 1 - (_gamePlayingTimer / _gamePlayingTimerMax);
+    }
+
+    public void TogglePauseGame()
+    {
+        IsGamePaused = !IsGamePaused;
+        Time.timeScale = _isGamePaused ? 0f : 1f;
+    }
+    
+    public void TogglePauseGame(bool isPaused)
+    {
+        IsGamePaused = isPaused;
+        Time.timeScale = _isGamePaused ? 0f : 1f;
+    }
+
+    private void OnDestroy()
+    {
+        Time.timeScale = 1f;
+        _serviceLocator.Unregister<KitchenGameManager>();
+        _gameInput.OnPauseAction -= GameInput_OnPauseAction;
     }
 }
