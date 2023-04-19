@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class OptionsUI : MonoBehaviour, IGameService
@@ -10,14 +11,31 @@ public class OptionsUI : MonoBehaviour, IGameService
     [SerializeField] private Button soundEffectsButton;
     [SerializeField] private Button musicButton;
     [SerializeField] private Button closeButton;
+    [SerializeField] private Button moveUpButton;
+    [SerializeField] private Button moveDownButton;
+    [SerializeField] private Button moveLeftButton;
+    [SerializeField] private Button moveRightButton;
+    [SerializeField] private Button interactButton;
+    [SerializeField] private Button interactAltButton;
+    [SerializeField] private Button pauseButton;
     [SerializeField] private TextMeshProUGUI soundEffectsText;
     [SerializeField] private TextMeshProUGUI musicEffectsText;
+    [SerializeField] private TextMeshProUGUI moveUpText;
+    [SerializeField] private TextMeshProUGUI moveDownText;
+    [SerializeField] private TextMeshProUGUI moveLeftText;
+    [SerializeField] private TextMeshProUGUI moveRightText;
+    [SerializeField] private TextMeshProUGUI interactText;
+    [SerializeField] private TextMeshProUGUI interactAltText;
+    [SerializeField] private TextMeshProUGUI pauseText;
+    [SerializeField] private Transform pressToRebindTransform;
+    
     
 
     private ServiceLocator _serviceLocator;
     private KitchenGameManager _gameManager;
     private SoundManager _soundManager;
     private MusicManager _musicManager;
+    private GameInput _gameInput;
 
     private float _minVolume = 0f;
     private float _maxVolume = 10f;
@@ -33,6 +51,7 @@ public class OptionsUI : MonoBehaviour, IGameService
         _soundManager = _serviceLocator.Get<SoundManager>();
         _musicManager = _serviceLocator.Get<MusicManager>();
         _gameManager = _serviceLocator.Get<KitchenGameManager>();
+        _gameInput = _serviceLocator.Get<GameInput>();
         
         _gameManager.OnGameUnPaused += GameManager_OnGameUnPaused;
         
@@ -58,7 +77,44 @@ public class OptionsUI : MonoBehaviour, IGameService
             Hide();
         });
         
+        moveUpButton.onClick.AddListener(() =>
+        {
+            RebindBinding(GameInput.Binding.Move_Up);
+        });
+        
+        moveDownButton.onClick.AddListener(() =>
+        {
+            RebindBinding(GameInput.Binding.Move_Down);
+        });
+        
+        moveLeftButton.onClick.AddListener(() =>
+        {
+            RebindBinding(GameInput.Binding.Move_Left);
+        });
+        
+        moveRightButton.onClick.AddListener(() =>
+        {
+            RebindBinding(GameInput.Binding.Move_Right);
+        });
+        
+        interactButton.onClick.AddListener(() =>
+        {
+            RebindBinding(GameInput.Binding.Interact);
+        });
+        
+        interactAltButton.onClick.AddListener(() =>
+        {
+            RebindBinding(GameInput.Binding.InteractAlternate);
+        });
+        
+        pauseButton.onClick.AddListener(() =>
+        {
+            RebindBinding(GameInput.Binding.Pause);
+        });
+        
+        
         Hide();
+        HidePressToRebindKey();
         UpdateVisual();
     }
 
@@ -68,6 +124,13 @@ public class OptionsUI : MonoBehaviour, IGameService
         int volumeMusicUI = Mathf.RoundToInt(Mathf.Lerp(_minVolume, _maxVolume, _musicManager.GetVolume()));
         soundEffectsText.text = $"Sound Effects: {volumeEffectsUI}";
         musicEffectsText.text = $"Music: {volumeMusicUI}";
+        moveUpText.text = _gameInput.GetBindingText((GameInput.Binding.Move_Up));
+        moveDownText.text = _gameInput.GetBindingText((GameInput.Binding.Move_Down));
+        moveLeftText.text = _gameInput.GetBindingText((GameInput.Binding.Move_Left));
+        moveRightText.text = _gameInput.GetBindingText((GameInput.Binding.Move_Right));
+        interactText.text = _gameInput.GetBindingText((GameInput.Binding.Interact));
+        interactAltText.text = _gameInput.GetBindingText((GameInput.Binding.InteractAlternate));
+        pauseText.text = _gameInput.GetBindingText((GameInput.Binding.Pause));
     }
 
     private void OnDestroy()
@@ -94,5 +157,27 @@ public class OptionsUI : MonoBehaviour, IGameService
     private void GameManager_OnGameUnPaused(object sender, EventArgs e)
     {
         Hide();
+    }
+
+    private void ShowPressToRebindKey()
+    {
+        pressToRebindTransform.gameObject.SetActive(true);
+    }
+    
+    private void HidePressToRebindKey()
+    {
+        pressToRebindTransform.gameObject.SetActive(false);
+    }
+
+    private void RebindBinding(GameInput.Binding binding)
+    {
+        if (_gameInput == null) return;
+
+        ShowPressToRebindKey();
+        _gameInput.RebindBinding(binding, () =>
+        {
+            HidePressToRebindKey();
+            UpdateVisual();
+        });
     }
 }
