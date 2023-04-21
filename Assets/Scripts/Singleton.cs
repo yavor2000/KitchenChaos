@@ -4,40 +4,40 @@ using UnityEngine;
 
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
-    private static T instance;
+    private static T _instance;
 
 
     public static T Instance
     {
         get
         {
-            if (instance == null)
+            if (_instance == null)
             {
-                instance = FindObjectOfType<T>();
-                if (instance == null)
+                _instance = FindAnyObjectByType<T>();
+                if (_instance == null)
                 {
                     GameObject obj = new GameObject();
                     obj.name = typeof(T).Name;
-                    instance = obj.AddComponent<T>();
+                    _instance = obj.AddComponent<T>();
                 }
             }
-            return instance;
+            return _instance;
         }
     }
     
     protected virtual void OnDestroy()
     {
-        if (instance == this)
+        if (_instance == this)
         {
-            instance = null;
+            _instance = null;
         }
     }
     
     protected virtual void Awake()
     {
-        if (instance == null)
+        if (_instance == null)
         {
-            instance = this as T;
+            _instance = this as T;
             DontDestroyOnLoad(gameObject);
         }
         else

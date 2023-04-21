@@ -31,7 +31,7 @@ public class KitchenGameManager : MonoBehaviour, IGameService
     private float _waitingToStartTimer = 1f;
     private float _countdownToStartTimer = 3f;
     private float _gamePlayingTimer = 0f;
-    private float _gamePlayingTimerMax = 20f;
+    private float _gamePlayingTimerMax = 240f;
     private bool _isGamePaused = false;
 
     public bool IsGamePaused

@@ -20,6 +20,9 @@ public class GameInput : MonoBehaviour, IGameService
         Interact,
         InteractAlternate,
         Pause,
+        Gamepad_Interact,
+        Gamepad_InteractAlt,
+        Gamepad_Pause,
     }
     
     private Vector2 _inputVector;
@@ -97,6 +100,12 @@ public class GameInput : MonoBehaviour, IGameService
                 return _playerInputActions.Player.Move.bindings[3].ToDisplayString();
             case Binding.Move_Right:
                 return _playerInputActions.Player.Move.bindings[4].ToDisplayString();
+            case Binding.Gamepad_Interact:
+                return _playerInputActions.Player.Interact.bindings[1].ToDisplayString();
+            case Binding.Gamepad_InteractAlt:
+                return _playerInputActions.Player.InteractAlternate.bindings[1].ToDisplayString();
+            case Binding.Gamepad_Pause:
+                return _playerInputActions.Player.Pause.bindings[1].ToDisplayString();
         }
     }
 
@@ -136,6 +145,18 @@ public class GameInput : MonoBehaviour, IGameService
             case Binding.Pause:
                 inputAction = _playerInputActions.Player.Pause;
                 bindingIndex = 0;
+                break;
+            case Binding.Gamepad_Interact:
+                inputAction = _playerInputActions.Player.Interact;
+                bindingIndex = 1;
+                break;
+            case Binding.Gamepad_InteractAlt:
+                inputAction = _playerInputActions.Player.InteractAlternate;
+                bindingIndex = 1;
+                break;
+            case Binding.Gamepad_Pause:
+                inputAction = _playerInputActions.Player.Pause;
+                bindingIndex = 1;
                 break;
         }
         inputAction.PerformInteractiveRebinding(bindingIndex)

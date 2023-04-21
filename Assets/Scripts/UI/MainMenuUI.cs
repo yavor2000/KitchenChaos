@@ -29,10 +29,11 @@ public class MainMenuUI : MonoBehaviour
         });
     }
 
-    // private void Start()
-    // {
+    private void Start()
+    {
     //     _gameManager = _serviceLocator.Get<KitchenGameManager>();
     //     _gameManager.TogglePauseGame(false);
-    // }
+        playButton.Select();
+    }
 }
 }
