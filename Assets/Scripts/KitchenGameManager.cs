@@ -28,7 +28,6 @@ public class KitchenGameManager : MonoBehaviour, IGameService
     private GameInput _gameInput;
     
     private State _state;
-    private float _waitingToStartTimer = 1f;
     private float _countdownToStartTimer = 3f;
     private float _gamePlayingTimer = 0f;
     private float _gamePlayingTimerMax = 240f;
@@ -42,15 +41,14 @@ public class KitchenGameManager : MonoBehaviour, IGameService
             if (_isGamePaused != value)
             {
                 _isGamePaused = value;
-            }
-
-            if (_isGamePaused)
-            {
-                OnGamePaused?.Invoke(this, EventArgs.Empty);
-            }
-            else
-            {
-                OnGameUnPaused?.Invoke(this, EventArgs.Empty);
+                if (_isGamePaused)
+                {
+                    OnGamePaused?.Invoke(this, EventArgs.Empty);
+                }
+                else
+                {
+                    OnGameUnPaused?.Invoke(this, EventArgs.Empty);
+                }
             }
         }
     }
@@ -60,14 +58,12 @@ public class KitchenGameManager : MonoBehaviour, IGameService
         get => _state;
         set
         {
-            if (_state != value)
+            if (_state == value) return;
+            _state = value;
+            OnStateChanged?.Invoke(this, new OnStateChangedEventArgs()
             {
-                _state = value;
-                OnStateChanged?.Invoke(this, new OnStateChangedEventArgs()
-                {
-                    State = _state
-                });
-            }
+                State = _state
+            });
         }
     }
 
@@ -85,6 +81,15 @@ public class KitchenGameManager : MonoBehaviour, IGameService
         _gameInput = _serviceLocator.Get<GameInput>();
 
         _gameInput.OnPauseAction += GameInput_OnPauseAction;
+        _gameInput.OnInteractAction += GameInput_OnInteractAction;
+    }
+
+    private void GameInput_OnInteractAction(object sender, EventArgs e)
+    {
+        if (_state == State.WaitingToStart)
+        {
+            GameState = State.CountdownToStart;
+        }
     }
 
     private void GameInput_OnPauseAction(object sender, EventArgs e)
@@ -97,11 +102,6 @@ public class KitchenGameManager : MonoBehaviour, IGameService
         switch (_state)
         {
             case State.WaitingToStart:
-                _waitingToStartTimer -= Time.deltaTime;
-                if (_waitingToStartTimer < 0f)
-                {
-                    GameState = State.CountdownToStart;
-                }
                 break;
             case State.CountdownToStart:
                 _countdownToStartTimer -= Time.deltaTime;

@@ -96,6 +96,11 @@ public class SoundManager : MonoBehaviour, IGameService
     {
         PlaySound(audioClipRefsSO.footstep, position, _volume * volume);
     }
+    
+    public void PlayCountdownSound()
+    {
+        PlaySound(audioClipRefsSO.warning, Vector3.zero);
+    }
 
     public void ChangeVolume()
     {

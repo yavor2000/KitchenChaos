@@ -14,6 +14,7 @@ public class DeliveryManager : MonoBehaviour, IGameService
     [SerializeField] private RecipeListSO recipeListSO;
 
     private ServiceLocator _serviceLocator;
+    private KitchenGameManager _gameManager;
     private List<RecipeSO> _waitingRecipeSOList;
     private float _spawnRecipeTimer;
     private float _spawnRecipeTimerMax = 4f;
@@ -28,8 +29,18 @@ public class DeliveryManager : MonoBehaviour, IGameService
         _waitingRecipeSOList = new List<RecipeSO>();
     }
 
+    private void Start()
+    {
+        _gameManager = _serviceLocator.Get<KitchenGameManager>();
+    }
+
     private void Update()
     {
+        if (!_gameManager.IsGamePlaying())
+        {
+            return;
+        }
+        
         _spawnRecipeTimer -= Time.deltaTime;
         if (_spawnRecipeTimer <= 0f)
         {

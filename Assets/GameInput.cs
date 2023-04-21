@@ -10,6 +10,7 @@ public class GameInput : MonoBehaviour, IGameService
     public event EventHandler OnInteractAction;
     public event EventHandler OnInteractAlternateAction;
     public event EventHandler OnPauseAction;
+    public event EventHandler OnBindRebindAction;
 
     public enum Binding
     {
@@ -167,6 +168,7 @@ public class GameInput : MonoBehaviour, IGameService
                 callback.Dispose();
                 _playerInputActions.Player.Enable();
                 onActionRebound();
+                OnBindRebindAction?.Invoke(this, EventArgs.Empty);
                 PlayerPrefs.SetString(PLAYER_PREFS_BINDING, _playerInputActions.SaveBindingOverridesAsJson());
                 PlayerPrefs.Save();
             })

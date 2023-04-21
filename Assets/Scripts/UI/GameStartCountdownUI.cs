@@ -11,24 +11,38 @@ public class GameStartCountdownUI : MonoBehaviour
 
     private ServiceLocator _serviceLocator;
     private KitchenGameManager _gameManager;
+    private SoundManager _soundManager;
+    private Animator _animator;
+    private int _previousCountdownNumber;
+    private static readonly int NUMBER_POPUP = Animator.StringToHash("NumberPopup");
 
     private void Awake()
     {
         _serviceLocator = ServiceLocator.Current;
+        _animator = GetComponent<Animator>();
     }
 
     private void Start()
     {
         _gameManager = _serviceLocator.Get<KitchenGameManager>();
         _gameManager.OnStateChanged += GameManager_OnStateChanged;
+        _soundManager = _serviceLocator.Get<SoundManager>();
         Hide();
     }
 
     private void Update()
     {
+        int countdownNumber = Mathf.CeilToInt(_gameManager.GetCountdownToStartTimer());
         if (countdownText.gameObject.activeInHierarchy)
         {
-            countdownText.text = Mathf.Ceil(_gameManager.GetCountdownToStartTimer()).ToString(CultureInfo.CurrentCulture);
+            countdownText.text = countdownNumber.ToString(CultureInfo.CurrentCulture);
+        }
+
+        if (_previousCountdownNumber != countdownNumber)
+        {
+            _previousCountdownNumber = countdownNumber;
+            _animator.SetTrigger(NUMBER_POPUP);
+            _soundManager.PlayCountdownSound();
         }
     }
 

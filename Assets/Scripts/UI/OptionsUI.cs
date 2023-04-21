@@ -118,6 +118,9 @@ public class OptionsUI : MonoBehaviour, IGameService
         moveDownText.text = _gameInput.GetBindingText((GameInput.Binding.Move_Down));
         moveLeftText.text = _gameInput.GetBindingText((GameInput.Binding.Move_Left));
         moveRightText.text = _gameInput.GetBindingText((GameInput.Binding.Move_Right));
+        interactText.text = _gameInput.GetBindingText((GameInput.Binding.Interact));
+        interactAltText.text = _gameInput.GetBindingText((GameInput.Binding.InteractAlternate));
+        pauseText.text = _gameInput.GetBindingText((GameInput.Binding.Pause));
         gamepadInteractText.text = _gameInput.GetBindingText((GameInput.Binding.Gamepad_Interact));
         gamepadInteractAltText.text = _gameInput.GetBindingText((GameInput.Binding.Gamepad_InteractAlt));
         gamepadPauseText.text = _gameInput.GetBindingText((GameInput.Binding.Gamepad_Pause));
