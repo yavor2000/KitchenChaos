@@ -238,5 +238,10 @@ namespace Counters
                 });
             }
         }
+
+        public bool IsFried()
+        {
+            return _state == State.Fried;
+        }
     }
 }

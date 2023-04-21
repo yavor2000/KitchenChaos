@@ -82,7 +82,6 @@ public class SoundManager : MonoBehaviour, IGameService
 
     private void PlaySound(AudioClip audioClip, Vector3 position, float volumeMultiplayer = 1f)
     {
-        Debug.Log($"play with {_volume} * {volumeMultiplayer}");
         AudioSource.PlayClipAtPoint(audioClip, position, _volume * volumeMultiplayer);
     }
 
@@ -100,6 +99,11 @@ public class SoundManager : MonoBehaviour, IGameService
     public void PlayCountdownSound()
     {
         PlaySound(audioClipRefsSO.warning, Vector3.zero);
+    }
+    
+    public void PlayWarningSound(Vector3 position)
+    {
+        PlaySound(audioClipRefsSO.warning, position);
     }
 
     public void ChangeVolume()
